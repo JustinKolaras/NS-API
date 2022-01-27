@@ -13,6 +13,14 @@ app.use(express.json());
 
 app.post(`${BASE_URL}/new-bans`, (req, res) => {
     const body = req.body;
+    const headers = req.headers;
+
+    if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        return res.status(401).send({
+            status: "error",
+            error: "Unauthorized",
+        });
+    }
 
     // Validate required fields
     if (
@@ -47,7 +55,16 @@ app.post(`${BASE_URL}/new-bans`, (req, res) => {
     });
 });
 
-app.get(`${BASE_URL}/new-bans`, (_, res) => {
+app.get(`${BASE_URL}/new-bans`, (req, res) => {
+    const headers = req.headers;
+
+    if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        return res.status(401).send({
+            status: "error",
+            error: "Unauthorized",
+        });
+    }
+
     return res.status(200).send({
         status: "ok",
         data: NEW_BANS_DESTINATION,
