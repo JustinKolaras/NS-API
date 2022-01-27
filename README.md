@@ -1,2 +1,2 @@
-# api-testing
-Just a "bin" for making my own RESTful APIs I guess.
+# NS-API
+Next Saturday's remote API.
