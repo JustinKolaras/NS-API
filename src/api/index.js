@@ -1,17 +1,16 @@
 require("dotenv").config({ path: "src/data/.env" });
 
 const express = require("express");
-// const noblox = require("noblox.js");
 
 const app = express();
 const PORT = 3000;
-const BASE_URL = "/NS/api/remote";
+const BASE = "api/remote";
 
 let NEW_BANS_DESTINATION = [];
 
 app.use(express.json());
 
-app.post(`${BASE_URL}/outbound/bans`, (req, res) => {
+app.post(`${BASE}/outbound/bans`, (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
@@ -37,25 +36,13 @@ app.post(`${BASE_URL}/outbound/bans`, (req, res) => {
         });
     }
 
-    /*
-    try {
-        noblox.getUsernameFromId(body.toBanID);
-        noblox.getUsernameFromId(body.executor);
-    } catch (err) {
-        return res.status(400).send({
-            status: "error",
-            error: "Invalid toBanID or Executor.",
-        });
-    }
-    */
-
     NEW_BANS_DESTINATION.push(body);
     return res.status(200).send({
         status: "ok",
     });
 });
 
-app.get(`${BASE_URL}/outbound/bans`, (req, res) => {
+app.get(`${BASE}/outbound/bans`, (req, res) => {
     const headers = req.headers;
 
     if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -71,7 +58,7 @@ app.get(`${BASE_URL}/outbound/bans`, (req, res) => {
     });
 });
 
-app.delete(`${BASE_URL}/outbound/bans/:id`, (req, res) => {
+app.delete(`${BASE}/outbound/bans/:id`, (req, res) => {
     const headers = req.headers;
 
     if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
