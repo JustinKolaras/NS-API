@@ -7,7 +7,7 @@ const app = express();
 const PORT = 3000;
 const BASE_URL = "/NS/api/remote";
 
-const NEW_BANS_DESTINATION = [];
+let NEW_BANS_DESTINATION = [];
 
 app.use(express.json());
 
@@ -91,9 +91,9 @@ app.delete(`${BASE_URL}/outbound/bans/:id`, (req, res) => {
     }
 
     for (const index in NEW_BANS_DESTINATION) {
-        const dist = NEW_BANS_DESTINATION[index];
-        if (dist.toBanID === id) {
-            NEW_BANS_DESTINATION = NEW_BANS_DESTINATION.splice(NEW_BANS_DESTINATION.indexOf(index), 1);
+        const dict = NEW_BANS_DESTINATION[index];
+        if (dict.toBanID == id) {
+            NEW_BANS_DESTINATION = NEW_BANS_DESTINATION.filter((item) => item !== dict);
             return res.status(200).send({
                 status: "ok",
             });
