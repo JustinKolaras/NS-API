@@ -1,7 +1,7 @@
 require("dotenv").config({ path: "src/data/.env" });
 
 const express = require("express");
-const noblox = require("noblox.js");
+// const noblox = require("noblox.js");
 
 const app = express();
 const PORT = 3000;
@@ -11,7 +11,7 @@ const NEW_BANS_DESTINATION = [];
 
 app.use(express.json());
 
-app.post(`${BASE_URL}/new-bans`, (req, res) => {
+app.post(`${BASE_URL}/outbound/bans`, (req, res) => {
     const body = req.body;
     const headers = req.headers;
 
@@ -33,7 +33,7 @@ app.post(`${BASE_URL}/new-bans`, (req, res) => {
     ) {
         return res.status(400).send({
             status: "error",
-            error: "Invalid payload syntax.",
+            error: "Invalid payload syntax",
         });
     }
 
@@ -55,7 +55,7 @@ app.post(`${BASE_URL}/new-bans`, (req, res) => {
     });
 });
 
-app.get(`${BASE_URL}/new-bans`, (req, res) => {
+app.get(`${BASE_URL}/outbound/bans`, (req, res) => {
     const headers = req.headers;
 
     if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -68,6 +68,41 @@ app.get(`${BASE_URL}/new-bans`, (req, res) => {
     return res.status(200).send({
         status: "ok",
         data: NEW_BANS_DESTINATION,
+    });
+});
+
+app.delete(`${BASE_URL}/outbound/bans/:id`, (req, res) => {
+    const headers = req.headers;
+
+    if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        return res.status(401).send({
+            status: "error",
+            error: "Unauthorized",
+        });
+    }
+
+    const { id } = req.params;
+
+    if (isNaN(parseInt(id))) {
+        return res.status(400).send({
+            status: "error",
+            error: "ID is not a number",
+        });
+    }
+
+    for (const index in NEW_BANS_DESTINATION) {
+        const dist = NEW_BANS_DESTINATION[index];
+        if (dist.toBanID === id) {
+            NEW_BANS_DESTINATION = NEW_BANS_DESTINATION.splice(NEW_BANS_DESTINATION.indexOf(index), 1);
+            return res.status(200).send({
+                status: "ok",
+            });
+        }
+    }
+
+    return res.status(400).send({
+        status: "error",
+        error: "Not found",
     });
 });
 
