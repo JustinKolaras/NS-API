@@ -3,7 +3,7 @@ require("dotenv").config({ path: "src/data/.env" });
 const express = require("express");
 
 const app = express();
-const PORT = 3000;
+const PORT = 80;
 const BASE = "api/remote";
 
 let NEW_BANS_DESTINATION = [];
@@ -37,7 +37,7 @@ app.post(`${BASE}/outbound/bans`, (req, res) => {
     }
 
     NEW_BANS_DESTINATION.push(body);
-    return res.status(200).send({
+    return res.status(201).send({
         status: "ok",
     });
 });
