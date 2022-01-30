@@ -4,7 +4,7 @@ const express = require("express");
 
 const app = express();
 const PORT = 80;
-const BASE = "api/remote";
+const BASE = "/api/remote";
 
 let NEW_BANS_DESTINATION = [];
 
