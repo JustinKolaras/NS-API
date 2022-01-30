@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "src/data/.env" });
+
 const express = require("express");
 const app = express();
 const folder = "./api";
