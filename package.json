@@ -2,9 +2,9 @@
     "name": "ns-api",
     "version": "1.0.0",
     "description": "",
-    "main": "src/api/index.js",
+    "main": "src/index.js",
     "scripts": {
-        "start": "node ./src/api/index.js",
+        "start": "node ./src/index.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [],
