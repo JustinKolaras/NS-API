@@ -3,7 +3,7 @@ require("dotenv").config({ path: "src/data/.env" });
 const express = require("express");
 
 const app = express();
-const PORT = 80;
+const PORT = 3000;
 const BASE = "/api/remote";
 
 let NEW_BANS_DESTINATION = [];
