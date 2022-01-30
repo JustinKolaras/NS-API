@@ -5,6 +5,7 @@ const BASE = process.env.BASE_APPENSION;
 let NEW_BANS_DESTINATION = [];
 
 module.exports = (app) => {
+    console.log(BASE);
     app.post(`${BASE}/outbound/bans`, (req, res) => {
         const body = req.body;
         const headers = req.headers;
