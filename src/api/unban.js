@@ -2,11 +2,11 @@ require("dotenv").config({ path: "src/data/.env" });
 
 const BASE = process.env.BASE_APPENSION;
 
-let NEW_BANS_DESTINATION = [];
+let NEW_UNBANS_DESTINATION = [];
 
 module.exports = (app) => {
-    // Posts and registers a new ban to the endpoint.
-    app.post(`${BASE}/outbound/bans`, (req, res) => {
+    // Posts and registers a new unban to the endpoint.
+    app.post(`${BASE}/outbound/unbans`, (req, res) => {
         const body = req.body;
         const headers = req.headers;
 
@@ -18,28 +18,21 @@ module.exports = (app) => {
         }
 
         // Validate required fields
-        if (
-            !body.toBanID ||
-            typeof body.toBanID !== "number" ||
-            !body.reason ||
-            typeof body.reason !== "string" ||
-            !body.executor ||
-            typeof body.executor !== "number"
-        ) {
+        if (!body.toUnbanID || typeof body.toUnbanID !== "number") {
             return res.status(400).send({
                 status: "error",
                 error: "Invalid payload syntax",
             });
         }
 
-        NEW_BANS_DESTINATION.push(body);
+        NEW_UNBANS_DESTINATION.push(body);
         return res.status(201).send({
             status: "ok",
         });
     });
 
-    // Gets and retrieves all new bans.
-    app.get(`${BASE}/outbound/bans`, (req, res) => {
+    // Gets and retrieves all new unbans.
+    app.get(`${BASE}/outbound/unbans`, (req, res) => {
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -51,12 +44,12 @@ module.exports = (app) => {
 
         return res.status(200).send({
             status: "ok",
-            data: NEW_BANS_DESTINATION,
+            data: NEW_UNBANS_DESTINATION,
         });
     });
 
-    // Deletes a specific pending ban.
-    app.delete(`${BASE}/outbound/bans/:id`, (req, res) => {
+    // Deletes a specific pending unban.
+    app.delete(`${BASE}/outbound/unbans/:id`, (req, res) => {
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -76,9 +69,9 @@ module.exports = (app) => {
         }
 
         for (const index in NEW_BANS_DESTINATION) {
-            const dict = NEW_BANS_DESTINATION[index];
-            if (dict.toBanID == id) {
-                NEW_BANS_DESTINATION = NEW_BANS_DESTINATION.filter((item) => item !== dict);
+            const dict = NEW_UNBANS_DESTINATION[index];
+            if (dict.toUnbanID == id) {
+                NEW_UNBANS_DESTINATION = NEW_UNBANS_DESTINATION.filter((item) => item !== dict);
                 return res.status(200).send({
                     status: "ok",
                 });

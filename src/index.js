@@ -9,6 +9,8 @@ require(folder + "/middlemen/parseJSON")(express, app);
 
 // API Routes
 require(folder + "/ban")(app);
+require(folder + "/kick")(app);
+require(folder + "/unban")(app);
 
 // Listener
 app.listen(process.env.PORT, () => console.log(`Listening: ${process.env.PORT}`));

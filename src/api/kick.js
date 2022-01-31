@@ -2,11 +2,11 @@ require("dotenv").config({ path: "src/data/.env" });
 
 const BASE = process.env.BASE_APPENSION;
 
-let NEW_BANS_DESTINATION = [];
+let NEW_KICKS_DESTINATION = [];
 
 module.exports = (app) => {
-    // Posts and registers a new ban to the endpoint.
-    app.post(`${BASE}/outbound/bans`, (req, res) => {
+    // Posts and registers a new kick to the endpoint.
+    app.post(`${BASE}/outbound/kicks`, (req, res) => {
         const body = req.body;
         const headers = req.headers;
 
@@ -19,8 +19,8 @@ module.exports = (app) => {
 
         // Validate required fields
         if (
-            !body.toBanID ||
-            typeof body.toBanID !== "number" ||
+            !body.toKickID ||
+            typeof body.toKickID !== "number" ||
             !body.reason ||
             typeof body.reason !== "string" ||
             !body.executor ||
@@ -32,14 +32,14 @@ module.exports = (app) => {
             });
         }
 
-        NEW_BANS_DESTINATION.push(body);
+        NEW_KICKS_DESTINATION.push(body);
         return res.status(201).send({
             status: "ok",
         });
     });
 
-    // Gets and retrieves all new bans.
-    app.get(`${BASE}/outbound/bans`, (req, res) => {
+    // Gets and retrieves all new kicks.
+    app.get(`${BASE}/outbound/kicks`, (req, res) => {
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -51,12 +51,29 @@ module.exports = (app) => {
 
         return res.status(200).send({
             status: "ok",
-            data: NEW_BANS_DESTINATION,
+            data: NEW_KICKS_DESTINATION,
         });
     });
 
-    // Deletes a specific pending ban.
-    app.delete(`${BASE}/outbound/bans/:id`, (req, res) => {
+    // Deletes all pending kicks.
+    app.delete(`${BASE}/outbound/kicks`, (req, res) => {
+        const headers = req.headers;
+
+        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+            return res.status(401).send({
+                status: "error",
+                error: "Unauthorized",
+            });
+        }
+
+        NEW_KICKS_DESTINATION = [];
+        return res.status(200).send({
+            status: "ok",
+        });
+    });
+
+    // Deletes a specific pending kick.
+    app.delete(`${BASE}/outbound/kicks/:id`, (req, res) => {
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
@@ -75,10 +92,10 @@ module.exports = (app) => {
             });
         }
 
-        for (const index in NEW_BANS_DESTINATION) {
-            const dict = NEW_BANS_DESTINATION[index];
-            if (dict.toBanID == id) {
-                NEW_BANS_DESTINATION = NEW_BANS_DESTINATION.filter((item) => item !== dict);
+        for (const index in NEW_KICKS_DESTINATION) {
+            const dict = NEW_KICKS_DESTINATION[index];
+            if (dict.toKickID == id) {
+                NEW_KICKS_DESTINATION = NEW_KICKS_DESTINATION.filter((item) => item !== dict);
                 return res.status(200).send({
                     status: "ok",
                 });
