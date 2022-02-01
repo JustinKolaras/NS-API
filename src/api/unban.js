@@ -68,7 +68,7 @@ module.exports = (app) => {
             });
         }
 
-        for (const index in NEW_BANS_DESTINATION) {
+        for (const index in NEW_UNBANS_DESTINATION) {
             const dict = NEW_UNBANS_DESTINATION[index];
             if (dict.toUnbanID == id) {
                 NEW_UNBANS_DESTINATION = NEW_UNBANS_DESTINATION.filter((item) => item !== dict);
