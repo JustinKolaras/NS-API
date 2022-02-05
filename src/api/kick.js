@@ -1,6 +1,6 @@
 require("dotenv").config({ path: "src/data/.env" });
 
-const BASE = process.env.BASE_APPENSION;
+const BASE = "/api/remote";
 
 let NEW_KICKS_DESTINATION = [];
 
@@ -10,7 +10,7 @@ module.exports = (app) => {
         const body = req.body;
         const headers = req.headers;
 
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
@@ -42,7 +42,7 @@ module.exports = (app) => {
     app.get(`${BASE}/outbound/kicks`, (req, res) => {
         const headers = req.headers;
 
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
@@ -59,7 +59,7 @@ module.exports = (app) => {
     app.delete(`${BASE}/outbound/kicks`, (req, res) => {
         const headers = req.headers;
 
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
@@ -76,7 +76,7 @@ module.exports = (app) => {
     app.delete(`${BASE}/outbound/kicks/:id`, (req, res) => {
         const headers = req.headers;
 
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION_KEY) {
+        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
