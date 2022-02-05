@@ -25,6 +25,16 @@ module.exports = (app) => {
             });
         }
 
+        for (const index in NEW_UNBANS_DESTINATION) {
+            const dict = NEW_UNBANS_DESTINATION[index];
+            if (dict.toBanID == body.toBanID) {
+                return res.status(409).send({
+                    status: "error",
+                    error: "Pending data already exists",
+                });
+            }
+        }
+
         NEW_UNBANS_DESTINATION.push(body);
         return res.status(201).send({
             status: "ok",
@@ -78,7 +88,7 @@ module.exports = (app) => {
             }
         }
 
-        return res.status(400).send({
+        return res.status(404).send({
             status: "error",
             error: "Not found",
         });
