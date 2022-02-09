@@ -14,6 +14,7 @@ module.exports = (app) => {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
+                statusCode: 401,
             });
         }
 
@@ -22,6 +23,7 @@ module.exports = (app) => {
             return res.status(400).send({
                 status: "error",
                 error: "Invalid payload syntax",
+                statusCode: 400,
             });
         }
 
@@ -31,6 +33,7 @@ module.exports = (app) => {
                 return res.status(409).send({
                     status: "error",
                     error: "Pending data already exists",
+                    statusCode: 409,
                 });
             }
         }
@@ -38,6 +41,7 @@ module.exports = (app) => {
         NEW_UNBANS_DESTINATION.push(body);
         return res.status(201).send({
             status: "ok",
+            statusCode: 201,
         });
     });
 
@@ -49,12 +53,14 @@ module.exports = (app) => {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
+                statusCode: 401,
             });
         }
 
         return res.status(200).send({
             status: "ok",
             data: NEW_UNBANS_DESTINATION,
+            statusCode: 200,
         });
     });
 
@@ -66,6 +72,7 @@ module.exports = (app) => {
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
+                statusCode: 401,
             });
         }
 
@@ -75,6 +82,7 @@ module.exports = (app) => {
             return res.status(400).send({
                 status: "error",
                 error: "ID is not a number",
+                statusCode: 400,
             });
         }
 
@@ -84,6 +92,7 @@ module.exports = (app) => {
                 NEW_UNBANS_DESTINATION = NEW_UNBANS_DESTINATION.filter((item) => item !== dict);
                 return res.status(200).send({
                     status: "ok",
+                    statusCode: 200,
                 });
             }
         }
@@ -91,6 +100,7 @@ module.exports = (app) => {
         return res.status(404).send({
             status: "error",
             error: "Not found",
+            statusCode: 404,
         });
     });
 };

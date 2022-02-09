@@ -8,6 +8,7 @@ module.exports = (express, app) => {
             message: {
                 status: "error",
                 error: "Too many requests",
+                statusCode: 429,
             },
             standardHeaders: true,
             legacyHeaders: false,
