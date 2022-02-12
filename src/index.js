@@ -8,6 +8,7 @@ const folder = "./api";
 require(folder + "/middleware/parseJSON")(express, app);
 require(folder + "/middleware/rateLimitConfig")(app);
 require(folder + "/middleware/ipFilter")(app);
+require(folder + "/middleware/authorization")(app);
 
 // API Routes
 require(folder + "/ban")(app);
