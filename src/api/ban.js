@@ -10,12 +10,6 @@ module.exports = (app) => {
         const body = req.body;
         const headers = req.headers;
 
-        return res.status(200).send({
-            status: "error",
-            error: req.ip,
-            statusCode: 400,
-        });
-
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
                 status: "error",
@@ -61,12 +55,6 @@ module.exports = (app) => {
     // Gets and retrieves all new bans.
     app.get(`${BASE}/outbound/bans`, (req, res) => {
         const headers = req.headers;
-
-        return res.status(200).send({
-            status: "error",
-            error: req.ip,
-            statusCode: 400,
-        });
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
             return res.status(401).send({
