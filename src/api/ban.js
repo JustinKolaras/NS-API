@@ -7,6 +7,7 @@ let NEW_BANS_DESTINATION = [];
 module.exports = (app) => {
     // Posts and registers a new ban to the endpoint.
     app.post(`${BASE}/outbound/bans`, (req, res) => {
+        console.log("post:", req.ip);
         const body = req.body;
         const headers = req.headers;
 
@@ -54,7 +55,7 @@ module.exports = (app) => {
 
     // Gets and retrieves all new bans.
     app.get(`${BASE}/outbound/bans`, (req, res) => {
-        console.log(req.ip);
+        console.log("get:", req.ip);
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
