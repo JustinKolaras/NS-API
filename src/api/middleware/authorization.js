@@ -6,6 +6,10 @@ module.exports = (app) => {
         if (headers.Authorization && headers.Authorization === process.env.AUTHORIZATION) {
             next();
         } else {
+            return res.status(200).send({
+                status: "error",
+                yourAuth: headers.Authorization,
+            });
             return res.status(401).send({
                 status: "error",
                 error: "Unauthorized",
