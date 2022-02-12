@@ -54,6 +54,7 @@ module.exports = (app) => {
 
     // Gets and retrieves all new bans.
     app.get(`${BASE}/outbound/bans`, (req, res) => {
+        console.log(req.ip);
         const headers = req.headers;
 
         if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
