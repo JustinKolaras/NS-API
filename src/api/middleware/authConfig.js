@@ -1,3 +1,7 @@
+/*
+    A middleware for restricting API endpoint usage to those without the authorization key.
+*/
+
 require("dotenv").config({ path: "src/data/.env" });
 
 module.exports = (app) => {

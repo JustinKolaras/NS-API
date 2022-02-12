@@ -1,4 +1,15 @@
+/*
+    API Route which handles all kick-related endpoints.
+    -> POST @ /api/remote/outbound/kicks
+    -> GET @ /api/remote/outbound/kicks
+    -> DELETE @ /api/remote/outbound/kicks
+    -> DELETE @ /api/remote/outbound/kicks/<player-id>
+*/
+
 require("dotenv").config({ path: "src/data/.env" });
+
+const rateLimit = require("express-rate-limit");
+const limits = require("./modules/limits");
 
 const BASE = "/api/remote";
 
@@ -6,7 +17,7 @@ let NEW_KICKS_DESTINATION = [];
 
 module.exports = (app) => {
     // Posts and registers a new kick to the endpoint.
-    app.post(`${BASE}/outbound/kicks`, (req, res) => {
+    app.post(`${BASE}/outbound/kicks`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
         // Validate required fields
@@ -44,7 +55,7 @@ module.exports = (app) => {
     });
 
     // Gets and retrieves all new kicks.
-    app.get(`${BASE}/outbound/kicks`, (req, res) => {
+    app.get(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
         return res.status(200).send({
             status: "ok",
             data: NEW_KICKS_DESTINATION,
@@ -53,7 +64,7 @@ module.exports = (app) => {
     });
 
     // Deletes all pending kicks.
-    app.delete(`${BASE}/outbound/kicks`, (req, res) => {
+    app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
         NEW_KICKS_DESTINATION = [];
         return res.status(200).send({
             status: "ok",
@@ -62,7 +73,7 @@ module.exports = (app) => {
     });
 
     // Deletes a specific pending kick.
-    app.delete(`${BASE}/outbound/kicks/:id`, (req, res) => {
+    app.delete(`${BASE}/outbound/kicks/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
 
         if (isNaN(parseInt(id))) {

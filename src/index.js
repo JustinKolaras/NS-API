@@ -1,14 +1,20 @@
+/*
+    @ns-api
+    Entry
+
+    Registers all API routes and middleware, project entry point.
+*/
+
 require("dotenv").config({ path: "src/data/.env" });
 
 const express = require("express");
 const app = express();
 const folder = "./api";
+const middlewareFolder = folder + "/middleware";
 
-// Middlemen
-require(folder + "/middleware/parseJSON")(express, app);
-require(folder + "/middleware/rateLimitConfig")(app);
-require(folder + "/middleware/ipFilter")(app);
-require(folder + "/middleware/authorization")(app);
+// Middleware
+require(middlewareFolder + "/authConfig")(app);
+require(middlewareFolder + "/parseJSON")(express, app);
 
 // API Routes
 require(folder + "/ban")(app);

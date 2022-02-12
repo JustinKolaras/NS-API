@@ -1,4 +1,14 @@
+/*
+    API Route which handles all ban-related endpoints.
+    -> POST @ /api/remote/outbound/bans
+    -> GET @ /api/remote/outbound/bans
+    -> DELETE @ /api/remote/outbound/bans/<player-id>
+*/
+
 require("dotenv").config({ path: "src/data/.env" });
+
+const rateLimit = require("express-rate-limit");
+const limits = require("./modules/limits");
 
 const BASE = "/api/remote";
 
@@ -6,7 +16,7 @@ let NEW_BANS_DESTINATION = [];
 
 module.exports = (app) => {
     // Posts and registers a new ban to the endpoint.
-    app.post(`${BASE}/outbound/bans`, (req, res) => {
+    app.post(`${BASE}/outbound/bans`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
         // Validate required fields
@@ -44,7 +54,7 @@ module.exports = (app) => {
     });
 
     // Gets and retrieves all new bans.
-    app.get(`${BASE}/outbound/bans`, (req, res) => {
+    app.get(`${BASE}/outbound/bans`, rateLimit(limits.DEFAULT), (_, res) => {
         return res.status(200).send({
             status: "ok",
             data: NEW_BANS_DESTINATION,
@@ -53,7 +63,7 @@ module.exports = (app) => {
     });
 
     // Deletes a specific pending ban.
-    app.delete(`${BASE}/outbound/bans/:id`, (req, res) => {
+    app.delete(`${BASE}/outbound/bans/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
 
         if (isNaN(parseInt(id))) {
