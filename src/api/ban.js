@@ -8,15 +8,6 @@ module.exports = (app) => {
     // Posts and registers a new ban to the endpoint.
     app.post(`${BASE}/outbound/bans`, (req, res) => {
         const body = req.body;
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
 
         // Validate required fields
         if (
@@ -54,16 +45,6 @@ module.exports = (app) => {
 
     // Gets and retrieves all new bans.
     app.get(`${BASE}/outbound/bans`, (req, res) => {
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
-
         return res.status(200).send({
             status: "ok",
             data: NEW_BANS_DESTINATION,
@@ -73,16 +54,6 @@ module.exports = (app) => {
 
     // Deletes a specific pending ban.
     app.delete(`${BASE}/outbound/bans/:id`, (req, res) => {
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
-
         const { id } = req.params;
 
         if (isNaN(parseInt(id))) {

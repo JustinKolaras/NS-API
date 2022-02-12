@@ -8,15 +8,6 @@ module.exports = (app) => {
     // Posts and registers a new kick to the endpoint.
     app.post(`${BASE}/outbound/kicks`, (req, res) => {
         const body = req.body;
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
 
         // Validate required fields
         if (
@@ -54,16 +45,6 @@ module.exports = (app) => {
 
     // Gets and retrieves all new kicks.
     app.get(`${BASE}/outbound/kicks`, (req, res) => {
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
-
         return res.status(200).send({
             status: "ok",
             data: NEW_KICKS_DESTINATION,
@@ -73,16 +54,6 @@ module.exports = (app) => {
 
     // Deletes all pending kicks.
     app.delete(`${BASE}/outbound/kicks`, (req, res) => {
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
-
         NEW_KICKS_DESTINATION = [];
         return res.status(200).send({
             status: "ok",
@@ -92,16 +63,6 @@ module.exports = (app) => {
 
     // Deletes a specific pending kick.
     app.delete(`${BASE}/outbound/kicks/:id`, (req, res) => {
-        const headers = req.headers;
-
-        if (!headers.authorization || headers.authorization !== process.env.AUTHORIZATION) {
-            return res.status(401).send({
-                status: "error",
-                error: "Unauthorized",
-                statusCode: 401,
-            });
-        }
-
         const { id } = req.params;
 
         if (isNaN(parseInt(id))) {
