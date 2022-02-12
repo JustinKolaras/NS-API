@@ -10,7 +10,7 @@ module.exports = (app) => {
         const body = req.body;
         const headers = req.headers;
 
-        return res.status(400).send({
+        return res.status(200).send({
             status: "error",
             error: req.ip,
             statusCode: 400,
@@ -62,7 +62,7 @@ module.exports = (app) => {
     app.get(`${BASE}/outbound/bans`, (req, res) => {
         const headers = req.headers;
 
-        return res.status(400).send({
+        return res.status(200).send({
             status: "error",
             error: req.ip,
             statusCode: 400,
