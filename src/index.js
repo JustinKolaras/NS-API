@@ -1,5 +1,5 @@
 /*
-    @ns-api
+    @api
     Entry
 
     Registers all API routes and middleware, project entry point.
