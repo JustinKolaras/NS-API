@@ -20,6 +20,7 @@ require(middlewareFolder + "/parseJSON")(express, app);
 require(folder + "/ban")(app);
 require(folder + "/kick")(app);
 require(folder + "/unban")(app);
+require(folder + "/sd")(app);
 
 // Listener
 app.listen(process.env.PORT, () => console.log(`Listening: ${process.env.PORT}`));

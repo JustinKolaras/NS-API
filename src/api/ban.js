@@ -35,15 +35,12 @@ module.exports = (app) => {
             });
         }
 
-        for (const index in NEW_BANS_DESTINATION) {
-            const dict = NEW_BANS_DESTINATION[index];
-            if (dict.toBanID == body.toBanID) {
-                return res.status(409).send({
-                    status: "error",
-                    error: "Pending data already exists",
-                    statusCode: 409,
-                });
-            }
+        if (NEW_BANS_DESTINATION.some((el) => el.toBanID == body.toBanID)) {
+            return res.status(409).send({
+                status: "error",
+                error: "Pending data already exists",
+                statusCode: 409,
+            });
         }
 
         NEW_BANS_DESTINATION.push(body);
