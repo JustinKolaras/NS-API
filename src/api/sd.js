@@ -57,7 +57,7 @@ module.exports = (app) => {
     });
 
     // Deletes all pending shutdowns.
-    app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.delete(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (_, res) => {
         NEW_SDS_DESTINATION = [];
         return res.status(200).send({
             status: "ok",
@@ -66,8 +66,16 @@ module.exports = (app) => {
     });
 
     // Deletes a specific pending shutdown.
-    app.delete(`${BASE}/outbound/kicks/:id`, rateLimit(limits.DEFAULT), (req, res) => {
+    app.delete(`${BASE}/outbound/shutdowns/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
+
+        if (!uuid.validate(id) || !uuid.version(id) === 4) {
+            return res.status(400).send({
+                status: "error",
+                error: "Invalid UUID",
+                statusCode: 200,
+            });
+        }
 
         for (const index in NEW_SDS_DESTINATION) {
             const dict = NEW_SDS_DESTINATION[index];
