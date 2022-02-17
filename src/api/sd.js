@@ -31,7 +31,7 @@ module.exports = (app) => {
             });
         }
 
-        if (NEW_SDS_DESTINATION.length >= 1) {
+        if (NEW_SDS_DESTINATION.length > 0) {
             return res.status(409).send({
                 status: "error",
                 error: "Request already initiated",
