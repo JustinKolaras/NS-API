@@ -73,7 +73,7 @@ module.exports = (app) => {
             return res.status(400).send({
                 status: "error",
                 error: "Invalid UUID",
-                statusCode: 200,
+                statusCode: 400,
             });
         }
 
