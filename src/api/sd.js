@@ -23,7 +23,7 @@ module.exports = (app) => {
         const body = req.body;
 
         // Validate required fields
-        if ((!body.reason, body.reason !== "") || typeof body.reason !== "string" || !body.executor || typeof body.executor !== "number") {
+        if (typeof body.reason !== "string" || !body.executor || typeof body.executor !== "number") {
             return res.status(400).send({
                 status: "error",
                 error: "Invalid payload syntax",
