@@ -16,14 +16,15 @@ module.exports = (app) => {
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
         console.log(req.body);
         const body = JSON.parse(JSON.stringify(req.body));
+        console.log("NEW BODY:\n", body);
 
         // Validate required fields
         if (
             !body.webhookURL ||
             typeof body.webhookURL !== "string" ||
             !body.webhookURL.includes("https://discord.com/api/webhooks/") ||
-            !body.webhookPayload ||
-            typeof body.webhookPayload !== "object"
+            !body.webhookPayload //||
+            //typeof body.webhookPayload !== "object"
         ) {
             return res.status(400).send({
                 status: "error",
