@@ -14,11 +14,17 @@ const BASE = "/api/remote";
 module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
-        const body = req.body;
+        const body = JSON.parse(req.body);
         console.log(body);
 
         // Validate required fields
-        if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
+        if (
+            !body.webhookURL ||
+            typeof body.webhookURL !== "string" ||
+            !body.webhookURL.includes("https://discord.com/api/webhooks/") ||
+            !body.webhookPayload ||
+            typeof body.webhookPayload !== "object"
+        ) {
             return res.status(400).send({
                 status: "error",
                 errorStatus: "internal",
