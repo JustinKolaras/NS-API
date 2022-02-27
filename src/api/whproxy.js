@@ -15,15 +15,10 @@ module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+        console.log(body);
 
         // Validate required fields
-        if (
-            !body.webhookURL ||
-            typeof body.webhookURL !== "string" ||
-            !body.webhookURL.includes("https://discord.com/api/webhooks/") ||
-            !body.webhookPayload ||
-            typeof body.webhookPayload !== "object"
-        ) {
+        if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
             return res.status(400).send({
                 status: "error",
                 errorStatus: "internal",
