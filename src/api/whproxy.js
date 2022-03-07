@@ -33,6 +33,7 @@ module.exports = (app) => {
         }
 
         try {
+            return res.status(200).send(body.webhookPayload);
             axios.post(body.webhookURL, body.webhookPayload);
         } catch (err) {
             const response = err.response;
