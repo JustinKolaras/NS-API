@@ -14,9 +14,7 @@ const BASE = "/api/remote";
 module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
-        console.log(req.body);
         const body = JSON.parse(JSON.stringify(req.body));
-        return res.status(200).send(body);
 
         // Validate required fields
         if (
