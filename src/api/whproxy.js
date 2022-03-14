@@ -15,9 +15,7 @@ module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
         //const body = JSON.parse(req.body);
-        const body = req.body;
-
-        console.log(`${body.webhookPayload}`);
+        console.log(typeof req.body.webhookPayload, req.body.webhookPayload);
 
         // Validate required fields
         if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
@@ -31,6 +29,7 @@ module.exports = (app) => {
 
         const errorInfo = { state: false, error: "" };
         axios.post(body.webhookURL, body.webhookPayload).catch((err) => {
+            console.log("Errored");
             errorInfo.state = true;
             errorInfo.error = err;
         });
