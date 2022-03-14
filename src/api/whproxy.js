@@ -17,13 +17,10 @@ module.exports = (app) => {
         //const body = JSON.parse(req.body);
         const body = req.body;
 
+        console.log(`req.body: ${req.body}\nJSON.parse(req.body): ${JSON.parse(req.body)}`);
+
         // Validate required fields
-        if (
-            !body.webhookURL ||
-            typeof body.webhookURL !== "string" ||
-            !body.webhookURL.includes("https://discord.com/api/webhooks/") ||
-            !body.webhookPayload
-        ) {
+        if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
             return res.status(400).send({
                 status: "error",
                 errorStatus: "internal",
