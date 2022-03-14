@@ -28,7 +28,7 @@ module.exports = (app) => {
         }
 
         const errorInfo = { state: false, error: "" };
-        axios.post(body.webhookURL, JSON.parse(webhookPayload)).catch((err) => {
+        axios.post(body.webhookURL, JSON.parse(body.webhookPayload)).catch((err) => {
             console.log("Errored");
             errorInfo.state = true;
             errorInfo.error = err;
