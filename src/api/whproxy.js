@@ -17,7 +17,7 @@ module.exports = (app) => {
         //const body = JSON.parse(req.body);
         const body = req.body;
 
-        console.log(`req.body: ${req.body}`);
+        console.log(`${body.webhookPayload}`);
 
         // Validate required fields
         if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
@@ -29,14 +29,18 @@ module.exports = (app) => {
             });
         }
 
-        try {
-            axios.post(body.webhookURL, body.webhookPayload);
-        } catch (err) {
-            const response = err.response;
+        const errorInfo = { state: false, error: "" };
+        axios.post(body.webhookURL, body.webhookPayload).catch((err) => {
+            errorInfo.state = true;
+            errorInfo.error = err;
+        });
+
+        if (errorInfo.state) {
+            const response = errorInfo.error.response;
             return res.status(response.status).send({
                 status: "error",
                 errorStatus: "external",
-                stringError: err.toString(),
+                stringError: errorInfo.error.toString(),
                 errorData: response.data,
                 statusCode: response.status,
             });
