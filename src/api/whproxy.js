@@ -14,7 +14,6 @@ const BASE = "/api/remote";
 module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
-        //const body = JSON.parse(req.body);
         const body = req.body;
 
         // Validate required fields
@@ -29,7 +28,6 @@ module.exports = (app) => {
 
         const errorInfo = { state: false, error: "" };
         axios.post(body.webhookURL, JSON.parse(body.webhookPayload)).catch((err) => {
-            console.log("Errored");
             errorInfo.state = true;
             errorInfo.error = err;
         });
