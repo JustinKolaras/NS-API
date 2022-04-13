@@ -56,7 +56,7 @@ module.exports = (app) => {
     });
 
     // Gets and retrieves all new kicks.
-    app.get(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.get(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
         APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
@@ -69,7 +69,7 @@ module.exports = (app) => {
     });
 
     // Deletes all pending kicks.
-    app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
         APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);

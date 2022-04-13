@@ -52,7 +52,7 @@ module.exports = (app) => {
     });
 
     // Gets and retrieves all new shutdowns.
-    app.get(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.get(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
         APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
@@ -65,7 +65,7 @@ module.exports = (app) => {
     });
 
     // Deletes all pending shutdowns.
-    app.delete(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.delete(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
         APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);

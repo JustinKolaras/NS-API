@@ -56,7 +56,7 @@ module.exports = (app) => {
     });
 
     // Gets and retrieves all new bans.
-    app.get(`${BASE}/outbound/bans`, rateLimit(limits.DEFAULT), (_, res) => {
+    app.get(`${BASE}/outbound/bans`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
         APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/bans`, payload: body.toString() }).catch(console.error);
