@@ -8,6 +8,8 @@
 
 require("dotenv").config({ path: "src/data/.env" });
 
+const APIRecords = require("./modules/APIRecords");
+
 const rateLimit = require("express-rate-limit");
 const limits = require("./modules/limits");
 
@@ -19,6 +21,8 @@ module.exports = (app) => {
     // Posts and registers a new kick to the endpoint.
     app.post(`${BASE}/outbound/kicks`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+
+        await APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (
@@ -53,6 +57,10 @@ module.exports = (app) => {
 
     // Gets and retrieves all new kicks.
     app.get(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
+
         return res.status(200).send({
             status: "ok",
             data: NEW_KICKS_DESTINATION,
@@ -62,6 +70,10 @@ module.exports = (app) => {
 
     // Deletes all pending kicks.
     app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
+
         NEW_KICKS_DESTINATION = [];
         return res.status(200).send({
             status: "ok",
@@ -72,6 +84,9 @@ module.exports = (app) => {
     // Deletes a specific pending kick.
     app.delete(`${BASE}/outbound/kicks/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks/${id}`, payload: body.toString() }).catch(console.error);
 
         if (isNaN(parseInt(id))) {
             return res.status(400).send({

@@ -7,6 +7,8 @@
 
 require("dotenv").config({ path: "src/data/.env" });
 
+const APIRecords = require("./modules/APIRecords");
+
 const rateLimit = require("express-rate-limit");
 const limits = require("./modules/limits");
 
@@ -18,6 +20,8 @@ module.exports = (app) => {
     // Posts and registers a new unban to the endpoint.
     app.post(`${BASE}/outbound/unbans`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+
+        await APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/unbans`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (!body.toUnbanID || typeof body.toUnbanID !== "number" || !body.executor || typeof body.executor !== "number") {
@@ -48,6 +52,10 @@ module.exports = (app) => {
 
     // Gets and retrieves all new unbans.
     app.get(`${BASE}/outbound/unbans`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/unbans`, payload: body.toString() }).catch(console.error);
+
         return res.status(200).send({
             status: "ok",
             data: NEW_UNBANS_DESTINATION,
@@ -58,6 +66,9 @@ module.exports = (app) => {
     // Deletes a specific pending unban.
     app.delete(`${BASE}/outbound/unbans/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/unbans/${id}`, payload: body.toString() }).catch(console.error);
 
         if (isNaN(parseInt(id))) {
             return res.status(400).send({

@@ -7,6 +7,8 @@
 
 require("dotenv").config({ path: "src/data/.env" });
 
+const APIRecords = require("./modules/APIRecords");
+
 const rateLimit = require("express-rate-limit");
 const limits = require("./modules/limits");
 
@@ -18,6 +20,8 @@ module.exports = (app) => {
     // Posts and registers a new ban to the endpoint.
     app.post(`${BASE}/outbound/bans`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+
+        await APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/bans`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (
@@ -44,6 +48,7 @@ module.exports = (app) => {
         }
 
         NEW_BANS_DESTINATION.push(body);
+
         return res.status(201).send({
             status: "ok",
             statusCode: 201,
@@ -52,6 +57,10 @@ module.exports = (app) => {
 
     // Gets and retrieves all new bans.
     app.get(`${BASE}/outbound/bans`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/bans`, payload: body.toString() }).catch(console.error);
+
         return res.status(200).send({
             status: "ok",
             data: NEW_BANS_DESTINATION,
@@ -62,6 +71,9 @@ module.exports = (app) => {
     // Deletes a specific pending ban.
     app.delete(`${BASE}/outbound/bans/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/bans/${id}`, payload: body.toString() }).catch(console.error);
 
         if (isNaN(parseInt(id))) {
             return res.status(400).send({

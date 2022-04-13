@@ -5,6 +5,8 @@
 
 require("dotenv").config({ path: "src/data/.env" });
 
+const APIRecords = require("./modules/APIRecords");
+
 const rateLimit = require("express-rate-limit");
 const limits = require("./modules/limits");
 const axios = require("axios");
@@ -15,6 +17,8 @@ module.exports = (app) => {
     // Sends a webhook request to Discord.
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+
+        await APIRecords.send({ type: "POST", endpoint: `${BASE}/proxy/discord`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {

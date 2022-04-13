@@ -10,6 +10,8 @@ require("dotenv").config({ path: "src/data/.env" });
 
 const uuid = require("uuid"); // UUIDs is a specific shutdown request's identifier
 
+const APIRecords = require("./modules/APIRecords");
+
 const rateLimit = require("express-rate-limit");
 const limits = require("./modules/limits");
 
@@ -21,6 +23,8 @@ module.exports = (app) => {
     // Posts and registers a new shutdown to the endpoint.
     app.post(`${BASE}/outbound/shutdowns`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
+
+        await APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (typeof body.reason !== "string" || !body.executor || typeof body.executor !== "number") {
@@ -49,6 +53,10 @@ module.exports = (app) => {
 
     // Gets and retrieves all new shutdowns.
     app.get(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
+
         return res.status(200).send({
             status: "ok",
             data: NEW_SDS_DESTINATION,
@@ -58,6 +66,10 @@ module.exports = (app) => {
 
     // Deletes all pending shutdowns.
     app.delete(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (_, res) => {
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
+
         NEW_SDS_DESTINATION = [];
         return res.status(200).send({
             status: "ok",
@@ -68,6 +80,9 @@ module.exports = (app) => {
     // Deletes a specific pending shutdown.
     app.delete(`${BASE}/outbound/shutdowns/:id`, rateLimit(limits.DEFAULT), (req, res) => {
         const { id } = req.params;
+        const body = req.body;
+
+        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns/${id}`, payload: body.toString() }).catch(console.error);
 
         if (!uuid.validate(id) || !uuid.version(id) === 4) {
             return res.status(400).send({
