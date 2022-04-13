@@ -22,7 +22,7 @@ module.exports = (app) => {
     app.post(`${BASE}/outbound/kicks`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
-        await APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (
@@ -59,7 +59,7 @@ module.exports = (app) => {
     app.get(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
         const body = req.body;
 
-        await APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
 
         return res.status(200).send({
             status: "ok",
@@ -72,7 +72,7 @@ module.exports = (app) => {
     app.delete(`${BASE}/outbound/kicks`, rateLimit(limits.DEFAULT), (_, res) => {
         const body = req.body;
 
-        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks`, payload: body.toString() }).catch(console.error);
 
         NEW_KICKS_DESTINATION = [];
         return res.status(200).send({
@@ -86,7 +86,7 @@ module.exports = (app) => {
         const { id } = req.params;
         const body = req.body;
 
-        await APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks/${id}`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/kicks/${id}`, payload: body.toString() }).catch(console.error);
 
         if (isNaN(parseInt(id))) {
             return res.status(400).send({

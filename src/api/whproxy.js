@@ -18,7 +18,7 @@ module.exports = (app) => {
     app.post(`${BASE}/proxy/discord`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
-        await APIRecords.send({ type: "POST", endpoint: `${BASE}/proxy/discord`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "POST", endpoint: `${BASE}/proxy/discord`, payload: body.toString() }).catch(console.error);
 
         // Validate required fields
         if (!body.webhookURL || typeof body.webhookURL !== "string" || !body.webhookURL.includes("https://discord.com/api/webhooks/") || !body.webhookPayload) {
