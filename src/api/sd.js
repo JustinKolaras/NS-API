@@ -24,7 +24,7 @@ module.exports = (app) => {
     app.post(`${BASE}/outbound/shutdowns`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
-        APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/shutdowns`, payload: JSON.stringify(body) }).catch(console.error);
 
         // Validate required fields
         if (typeof body.reason !== "string" || !body.executor || typeof body.executor !== "number") {
@@ -55,7 +55,7 @@ module.exports = (app) => {
     app.get(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
-        APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/shutdowns`, payload: JSON.stringify(body) }).catch(console.error);
 
         return res.status(200).send({
             status: "ok",
@@ -68,7 +68,7 @@ module.exports = (app) => {
     app.delete(`${BASE}/outbound/shutdowns`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
-        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns`, payload: JSON.stringify(body) }).catch(console.error);
 
         NEW_SDS_DESTINATION = [];
         return res.status(200).send({
@@ -82,7 +82,7 @@ module.exports = (app) => {
         const { id } = req.params;
         const body = req.body;
 
-        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns/${id}`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/shutdowns/${id}`, payload: JSON.stringify(body) }).catch(console.error);
 
         if (!uuid.validate(id) || !uuid.version(id) === 4) {
             return res.status(400).send({

@@ -21,7 +21,7 @@ module.exports = (app) => {
     app.post(`${BASE}/outbound/bans`, rateLimit(limits.POST), (req, res) => {
         const body = req.body;
 
-        APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/bans`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "POST", endpoint: `${BASE}/outbound/bans`, payload: JSON.stringify(body) }).catch(console.error);
 
         // Validate required fields
         if (
@@ -59,7 +59,7 @@ module.exports = (app) => {
     app.get(`${BASE}/outbound/bans`, rateLimit(limits.DEFAULT), (req, res) => {
         const body = req.body;
 
-        APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/bans`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "GET", endpoint: `${BASE}/outbound/bans`, payload: JSON.stringify(body) }).catch(console.error);
 
         return res.status(200).send({
             status: "ok",
@@ -73,7 +73,7 @@ module.exports = (app) => {
         const { id } = req.params;
         const body = req.body;
 
-        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/bans/${id}`, payload: body.toString() }).catch(console.error);
+        APIRecords.send({ type: "DELETE", endpoint: `${BASE}/outbound/bans/${id}`, payload: JSON.stringify(body) }).catch(console.error);
 
         if (isNaN(parseInt(id))) {
             return res.status(400).send({
